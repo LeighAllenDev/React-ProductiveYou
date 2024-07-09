@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { axiosReq } from '../api/axiosDefaults';
-import { Card, Button, Form, Modal } from 'react-bootstrap';
-import EditTeam from '../components/EditTeam'; // Ensure the path to EditTeam is correct
+import { Card, Button, Form, Modal, Container, Row, Col } from 'react-bootstrap';
+import EditTeam from '../components/EditTeam';
+import styles from '../App.module.css';
 
 const TeamsPage = () => {
   const [teams, setTeams] = useState([]);
@@ -122,17 +123,17 @@ const TeamsPage = () => {
   };
 
   return (
-    <div>
-      <h1>Teams Page</h1>
+    <Container>
+      <h1 className={styles.textWhite}>Teams Page</h1>
 
       <Button onClick={() => setShowCreateForm(!showCreateForm)}>
         {showCreateForm ? 'Cancel' : 'Create New Team'}
       </Button>
 
       {showCreateForm && (
-        <Form onSubmit={handleAddTeamSubmit}>
+        <Form onSubmit={handleAddTeamSubmit} className="mt-3">
           <Form.Group>
-            <Form.Label>Team Name</Form.Label>
+            <Form.Label className={styles.formLabel}>Team Name</Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -142,7 +143,7 @@ const TeamsPage = () => {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Description</Form.Label>
+            <Form.Label className={styles.formLabel}>Description</Form.Label>
             <Form.Control
               as="textarea"
               name="description"
@@ -151,7 +152,7 @@ const TeamsPage = () => {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Select Users</Form.Label>
+            <Form.Label className={styles.formLabel}>Select Users</Form.Label>
             <Form.Control
               as="select"
               multiple
@@ -170,21 +171,25 @@ const TeamsPage = () => {
         </Form>
       )}
 
-      <hr />
+      <hr className={styles.hrWhite} />
 
-      <h2>Existing Teams:</h2>
-      {teams.map(team => (
-        <Card key={team.id} className="mb-3">
-          <Card.Body>
-            <Card.Title>{team.name}</Card.Title>
-            <Card.Text>{team.description}</Card.Text>
-            <Card.Text>Members: {team.users.map(user => user.username).join(', ')}</Card.Text>
-            <Button onClick={() => handleJoinTeam(team.id)}>Join Team</Button>
-            <Button variant="warning" onClick={() => handleEditTeam(team)}>Edit Team</Button>
-            <Button variant="danger" onClick={() => handleDeleteTeam(team.id)}>Delete Team</Button>
-          </Card.Body>
-        </Card>
-      ))}
+      <h2 className={styles.textWhite}>Existing Teams:</h2>
+      <Row>
+        {teams.map(team => (
+          <Col md={4} key={team.id} className={styles.cardContainer}>
+            <Card className={styles.cardCustom}>
+              <Card.Body>
+                <Card.Title>{team.name}</Card.Title>
+                <Card.Text>{team.description}</Card.Text>
+                <Card.Text>Members: {team.users.map(user => user.username).join(', ')}</Card.Text>
+                <Button onClick={() => handleJoinTeam(team.id)}>Join Team</Button>
+                <Button variant="warning" onClick={() => handleEditTeam(team)}>Edit Team</Button>
+                <Button variant="danger" onClick={() => handleDeleteTeam(team.id)}>Delete Team</Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
 
       <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
         <Modal.Header closeButton>
@@ -200,7 +205,7 @@ const TeamsPage = () => {
           )}
         </Modal.Body>
       </Modal>
-    </div>
+    </Container>
   );
 };
 

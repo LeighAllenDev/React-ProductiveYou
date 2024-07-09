@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Container, Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { axiosReq } from '../api/axiosDefaults';
+import styles from '../App.module.css'; // Assuming you have your CSS module for additional styles
 
 const EditCategory = () => {
   const { categoryId } = useParams();
@@ -11,7 +14,7 @@ const EditCategory = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await axios.get(`/api/categories/${categoryId}/`);
+        const response = await axiosReq.get(`/api/categories/${categoryId}/`);
         setCategoryName(response.data.name);
       } catch (error) {
         console.error('Error fetching category:', error);
@@ -27,7 +30,7 @@ const EditCategory = () => {
   const handleEditCategorySubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/categories/${categoryId}/`, { name: categoryName });
+      await axiosReq.put(`/api/categories/${categoryId}/`, { name: categoryName });
       alert('Category updated successfully!');
       navigate('/categories'); // Navigate to categories list page
     } catch (error) {
@@ -41,37 +44,28 @@ const EditCategory = () => {
   }
 
   return (
-    <div>
-      <h3 className="center-align light-blue-text text-darken-4">Edit Category</h3>
-      <div className="row card-panel grey lighten-5">
-        <form className="col s12" onSubmit={handleEditCategorySubmit}>
-          <div className="row">
-            <div className="input-field col s12">
-              <i className="fas fa-folder-open prefix light-blue-text text-darken-4"></i>
-              <input
-                id="category_name"
-                name="category_name"
-                value={categoryName}
-                minLength="3"
-                maxLength="25"
-                type="text"
-                className="validate"
-                required
-                onChange={(e) => setCategoryName(e.target.value)}
-              />
-              <label htmlFor="category_name" className="active">Category Name</label>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 center-align">
-              <button type="submit" className="btn-large light-blue darken-1">
-                Update Category <i className="fas fa-save right"></i>
-              </button>
-            </div>
-          </div>
-        </form>
+    <Container className={styles.App}>
+      <h3 className="text-center light-blue-text text-darken-4">Edit Category</h3>
+      <div className="card-panel grey lighten-5">
+        <Form onSubmit={handleEditCategorySubmit} className={styles.Content}>
+          <Form.Group controlId="categoryName">
+            <Form.Label>Category Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="category_name"
+              value={categoryName}
+              minLength="3"
+              maxLength="25"
+              required
+              onChange={(e) => setCategoryName(e.target.value)}
+            />
+          </Form.Group>
+          <Button type="submit" variant="primary" className="mt-3">
+            Update Category <i className="fas fa-save ml-1"></i>
+          </Button>
+        </Form>
       </div>
-    </div>
+    </Container>
   );
 };
 

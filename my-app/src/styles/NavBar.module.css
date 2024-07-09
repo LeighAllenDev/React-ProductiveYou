@@ -1,6 +1,7 @@
 .NavBar {
     background-color: aliceblue;
     border: 1px solid #dadada;
+    position: fixed;
 }
 
 .NavLink {
@@ -9,4 +10,12 @@
 
 .Active i {
     color: darkgray;
+}
+
+.fixed-top {
+    position: relative;
+}
+
+.Navbar {
+    position: relative;
 }

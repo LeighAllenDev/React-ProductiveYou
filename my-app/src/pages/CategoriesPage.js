@@ -5,14 +5,24 @@ import { Link } from 'react-router-dom';
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
   const [newCategoryName, setNewCategoryName] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get('/api/categories/');
-        setCategories(response.data);
+        // Check if response has a 'results' array
+        if (response.data && Array.isArray(response.data.results)) {
+          setCategories(response.data.results); // Set categories to 'results'
+        } else {
+          throw new Error('Unexpected response format: data.results is not an array');
+        }
       } catch (error) {
         console.error('Error fetching categories:', error);
+        setError('Failed to fetch categories. Please try again later.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -44,6 +54,14 @@ const CategoriesPage = () => {
       alert('An error occurred while deleting the category, please try again.');
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div>

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import defaultImage from "../assets/defaultImage.jpg";
-import { Card } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import { axiosReq } from '../api/axiosDefaults';
+import styles from '../App.module.css';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -76,64 +77,68 @@ const ProfilePage = () => {
   }
 
   return (
-    <div>
-      <h2>User Profile</h2>
-      <div>
-        <img
-          src={profile.image || defaultImage}
-          alt="Profile"
-          style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-          onError={handleImageError}
-        />
-        <h3>{profile.username}</h3> {/* Use profile.username instead of profile.owner.username */}
-        {editing ? (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <label htmlFor="content">Bio:</label>
-            <textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-            />
-            <label htmlFor="image">Profile Image:</label>
-            <input
-              type="file"
-              id="image"
-              onChange={(e) => setImage(e.target.files[0])}
-              accept="image/*"
-            />
-            <button type="submit">Update Profile</button>
-            <button type="button" onClick={() => setEditing(false)}>
-              Cancel
-            </button>
-          </form>
-        ) : (
-          <>
-            <p>{profile.name}</p>
-            <p>{profile.content}</p>
-            <button onClick={() => setEditing(true)}>Edit Profile</button>
-          </>
-        )}
-      </div>
-      <div>
-        <h3>Teams</h3>
-        {teams.map(team => (
-          <Card key={team.id} className="mb-3">
-            <Card.Body>
-              <Card.Title>{team.name}</Card.Title>
-              <Card.Text>{team.description}</Card.Text>
-            </Card.Body>
-          </Card>
-        ))}
-      </div>
-    </div>
+    <Container className={styles.App}>
+      <h2 className={styles.textWhite}>User Profile</h2>
+      <Row>
+        <Col md={5} className={`mb-4 ${styles.Content}`}>
+          <img
+            src={profile.image || defaultImage}
+            alt="Profile"
+            className={styles.Image}
+            onError={handleImageError}
+          />
+          <h3 className={styles.textWhite}>{profile.username}</h3>
+          {editing ? (
+            <form onSubmit={handleSubmit} className={styles.Content}>
+              <label htmlFor="name" className={styles.formLabel}>Name:</label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="form-control"
+              />
+              <label htmlFor="content" className={styles.formLabel}>Bio:</label>
+              <textarea
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="form-control"
+              />
+              <label htmlFor="image" className={styles.formLabel}>Profile Image:</label>
+              <input
+                type="file"
+                id="image"
+                onChange={(e) => setImage(e.target.files[0])}
+                accept="image/*"
+                className="form-control"
+              />
+              <button type="submit" className="btn btn-primary mt-2">Update Profile</button>
+              <button type="button" onClick={() => setEditing(false)} className="btn btn-secondary mt-2">Cancel</button>
+            </form>
+          ) : (
+            <>
+              <p>{profile.name}</p>
+              <p>{profile.content}</p>
+              <button onClick={() => setEditing(true)} className="btn btn-warning">Edit Profile</button>
+            </>
+          )}
+        </Col>
+        <Col md={1}></Col> {/* Spacer Column */}
+        <Col md={6} className={styles.Content}>
+          <h3 className={styles.textWhite}>Teams</h3>
+          {teams.map(team => (
+            <Card key={team.id} className={`${styles.cardCustom} mb-3`}>
+              <Card.Body>
+                <Card.Title>{team.name}</Card.Title>
+                <Card.Text>{team.description}</Card.Text>
+              </Card.Body>
+            </Card>
+          ))}
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

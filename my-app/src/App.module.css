@@ -17,10 +17,12 @@
   .Content {
     background-color: black;
     padding: 10px;
-    border-radius: 2px;
-    border: 1px solid #dadadf;
   }
   
+  input[type="file"] {
+    display: inline;
+  }
+
   .FillerImage {
     object-fit: cover;
     height: 100%;

@@ -1,0 +1,30 @@
+/* TeamsPage.module.css */
+.container {
+  background-color: black;
+  min-height: 100vh;
+  padding: 20px;
+  margin-top: 60px;
+  color: whitesmoke;
+}
+
+.text-white {
+  color: black;
+}
+
+.form-label {
+  color: black;
+}
+
+.hr-white {
+  border-top: 1px solid white;
+}
+
+.card-custom {
+  background-color: #f8f9fa;
+  color: black;
+}
+
+.card-container {
+  margin-bottom: 1rem;
+  color: black;
+}

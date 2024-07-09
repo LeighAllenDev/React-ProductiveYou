@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Container, Row, Col, Card, Form, Button } from 'react-bootstrap';
+import styles from '../App.module.css';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
@@ -64,63 +66,48 @@ const CategoriesPage = () => {
   }
 
   return (
-    <div>
-      <h3 className="center-align light-blue-text text-darken-4">Categories</h3>
+    <Container className={styles.App}>
+      <h3 className="text-center text-light">Categories</h3>
 
       {/* Add Category Form */}
-      <div className="row card-panel grey lighten-5">
-        <form className="col s12" onSubmit={handleAddCategorySubmit}>
-          <div className="row">
-            <div className="input-field col s12">
-              <i className="fas fa-folder-open prefix light-blue-text text-darken-4"></i>
-              <input
-                id="new_category_name"
-                name="new_category_name"
-                value={newCategoryName}
-                minLength="3"
-                maxLength="25"
-                type="text"
-                className="validate"
-                required
-                onChange={(e) => setNewCategoryName(e.target.value)}
-              />
-              <label htmlFor="new_category_name">New Category Name</label>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col s12 center-align">
-              <button type="submit" className="btn-large light-blue darken-1">
-                Add Category <i className="fas fa-plus-square right"></i>
-              </button>
-            </div>
-          </div>
-        </form>
+      <div className={`card-panel ${styles.Content} mb-4`}>
+        <Form onSubmit={handleAddCategorySubmit}>
+          <Form.Group>
+            <Form.Label>New Category Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={newCategoryName}
+              minLength="3"
+              maxLength="25"
+              required
+              onChange={(e) => setNewCategoryName(e.target.value)}
+            />
+          </Form.Group>
+          <Button type="submit" variant="primary" className="mt-3">
+            Add Category
+          </Button>
+        </Form>
       </div>
 
       {/* Categories List */}
-      <div className="row">
+      <Row>
         {categories.map((category) => (
-          <div key={category.id} className="col s12 m6 l3">
-            <div className="card light-blue darken-4 center-align">
-              <div className="card-content white-text">
-                <span className="card-title">{category.name}</span>
-              </div>
-              <div className="card-action">
-                <Link
-                  to={`/categories/edit/${category.id}`}
-                  className="btn green accent-4"
-                >
+          <Col key={category.id} sm={12} md={6} lg={4} className="mb-4">
+            <Card className={styles.cardCustom}>
+              <Card.Body className="text-center">
+                <Card.Title>{category.name}</Card.Title>
+                <Link to={`/categories/edit/${category.id}`} className="btn btn-success me-2">
                   Edit
                 </Link>
-                <button className="btn red" onClick={() => handleDeleteCategory(category.id)}>
+                <Button variant="danger" onClick={() => handleDeleteCategory(category.id)}>
                   Delete
-                </button>
-              </div>
-            </div>
-          </div>
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 

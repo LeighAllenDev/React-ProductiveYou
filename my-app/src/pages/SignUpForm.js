@@ -13,7 +13,7 @@ import axios from "axios";
 
 import styles from "../styles/SignInUpForm.module.css";
 import btnStyles from "../styles/Button.module.css";
-import appStyles from "../App.module.css";
+import appStyles from "../styles/App.module.css";
 import signup from "../assets/signup.jpg";
 
 const SignUpForm = () => {

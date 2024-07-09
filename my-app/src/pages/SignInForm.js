@@ -5,7 +5,7 @@ import { Form, Button, Alert, Container, Row, Col, Image } from "react-bootstrap
 import signin from "../assets/signin.jpg";
 import styles from "../styles/SignInUpForm.module.css";
 import btnStyles from "../styles/Button.module.css";
-import appStyles from "../App.module.css";
+import appStyles from "../styles/App.module.css";
 import { useSetCurrentUser } from "../contexts/CurrentUser";
 
 function SignInForm() {
@@ -44,7 +44,7 @@ function SignInForm() {
 
   return (
     <Row className={styles.Row}>
-      <Col className="my-auto p-0 p-md-2" md={6}>
+      <Col className="my-auto p-0 p-md-2 App" md={6}>
         <Container className={`${appStyles.Content} p-4 `}>
           <h1 className={styles.Header}>Sign In</h1>
           <Form onSubmit={handleSubmit}>

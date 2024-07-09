@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Form, Button } from 'react-bootstrap';
 import { axiosReq } from '../api/axiosDefaults';
+import styles from '../App.module.css';
 
 const TaskForm = () => {
     const { id } = useParams();
@@ -83,50 +85,97 @@ const TaskForm = () => {
     };
 
     return (
-        <div>
-            <h1>{id ? 'Edit Task' : 'Create Task'}</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Task Name</label>
-                    <input type="text" name="task_name" value={task.task_name} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>Description</label>
-                    <textarea name="description" value={task.description} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>Due Date</label>
-                    <input type="date" name="due_date" value={task.due_date} onChange={handleChange} />
-                </div>
-                <div>
-                    <label>Category</label>
-                    <select name="category" value={task.category} onChange={handleChange} required>
+        <Container className={styles.App}>
+            <h1 className="text-center">{id ? 'Edit Task' : 'Create Task'}</h1>
+            <Form onSubmit={handleSubmit} className={styles.Content}>
+                <Form.Group controlId="taskName">
+                    <Form.Label>Task Name</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="task_name"
+                        value={task.task_name}
+                        onChange={handleChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group controlId="description">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                        as="textarea"
+                        name="description"
+                        value={task.description}
+                        onChange={handleChange}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group controlId="dueDate">
+                    <Form.Label>Due Date</Form.Label>
+                    <Form.Control
+                        type="date"
+                        name="due_date"
+                        value={task.due_date || ''}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group controlId="category">
+                    <Form.Label>Category</Form.Label>
+                    <Form.Control
+                        as="select"
+                        name="category"
+                        value={task.category}
+                        onChange={handleChange}
+                        required
+                        className="mb-3"
+                    >
                         <option value="">Select Category</option>
                         {categories.map((category) => (
-                            <option key={category.id} value={category.id}>{category.name}</option>
+                            <option key={category.id} value={category.id}>
+                                {category.name}
+                            </option>
                         ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Team</label>
-                    <select name="team" value={task.team} onChange={handleChange} required>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="team">
+                    <Form.Label>Team</Form.Label>
+                    <Form.Control
+                        as="select"
+                        name="team"
+                        value={task.team}
+                        onChange={handleChange}
+                        required
+                        className="mb-3"
+                    >
                         <option value="">Select Team</option>
                         {teams.map((team) => (
-                            <option key={team.id} value={team.id}>{team.name}</option>
+                            <option key={team.id} value={team.id}>
+                                {team.name}
+                            </option>
                         ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Urgent</label>
-                    <input type="checkbox" name="is_urgent" checked={task.is_urgent} onChange={handleChange} />
-                </div>
-                <div>
-                    <label>Completed</label>
-                    <input type="checkbox" name="completed" checked={task.completed} onChange={handleChange} />
-                </div>
-                <button type="submit">Save</button>
-            </form>
-        </div>
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group controlId="isUrgent">
+                    <Form.Check
+                        type="checkbox"
+                        name="is_urgent"
+                        label="Urgent"
+                        checked={task.is_urgent}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group controlId="completed">
+                    <Form.Check
+                        type="checkbox"
+                        name="completed"
+                        label="Completed"
+                        checked={task.completed}
+                        onChange={handleChange}
+                    />
+                </Form.Group>
+                <Button type="submit" variant="primary" className="mt-3">
+                    Save
+                </Button>
+            </Form>
+        </Container>
     );
 };
 

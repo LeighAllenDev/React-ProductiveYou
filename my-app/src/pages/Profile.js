@@ -62,7 +62,11 @@ const ProfilePage = () => {
         formData.append('image', image);
       }
 
-      const response = await axiosReq.put(`/profiles/${id ? id : 'me'}/`, formData);
+      const response = await axiosReq.put(`/profiles/${id ? id : 'me'}/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       setProfile(response.data);
       setEditing(false); // Exit edit mode upon successful update
@@ -89,7 +93,7 @@ const ProfilePage = () => {
           />
           <h3 className={styles.textWhite}>{profile.username}</h3>
           {editing ? (
-            <form onSubmit={handleSubmit} className={styles.Content}>
+            <form onSubmit={handleSubmit} encType="multipart/form-data" className={styles.Content}>
               <label htmlFor="name" className={styles.formLabel}>Name:</label>
               <input
                 type="text"

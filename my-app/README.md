@@ -1,37 +1,37 @@
 # ProductiveYou Front-End
-Code Institute PP05 Front-End
+**Code Institute PP05 Front-End**
 
 ## Project Overview
-
+![Home Page image](src/assets/ReadMe/HomePage.png)
 This is ProductiveYou, my take on a productivity app for teams and workplaces. The aim is to give users the ability to sign up, assign teams and collaborate on task management. Users can choose a team to complete each task and set its priority, as well as assigning each task to a category, helping keep tasks organized.
 
-This project works hand in hand with another project I’ve made [ProductiveYou API] which works as the back-end for this, creating a working database and allowing users to login and register, as well as opening up full crud functionality so they can create, read, update and edit tasks and categories.
+This project works hand in hand with another project I’ve made [ProductiveYou API](https://github.com/LeighAllenDev/ProductiveYouAPI) which works as the back-end for this, creating a working database and allowing users to login and register, as well as opening up full crud functionality so they can create, read, update and edit tasks and categories.
 
 ## Design Process
-
-During the design process I drew up some wireframes of how I expected pages to look, this game me a base for the front end UI. 
-
+During the design process I drew up some wireframes of how I expected pages to look, this game me a base for the front end UI. Although the overall project evolved over time.
+![Wireframes](src/assets/ReadMe/wireframes.jpeg)
 The site has a minimalistic design with a black background, White cards and the text alternates between white and black depending on the background. Cards are styled as bootstrap components and the buttons are also bootstraps default styling.
-
 ### Features
 
-**Dynamic nav bar** - The project utilizes a dynamic navigation bar that updates once the user has logged in, see images below. This prevents a user being able to add tasks, categories or manipulate the site in any way without being registered. 
+**Dynamic nav bar** - The project utilizes a dynamic navigation bar that updates once the user has logged in, see images below. This prevents a user being able to add tasks, categories or manipulate the site in any way without being registered.
 
 When the user isnt logged in the navbar only displays links to a **Sign in** and **Register** page as seen below.
 
-[insert logged out nav bar image here]
+![Logged out links](src/assets/ReadMe/LoggedOutLinks.png)
 
 When a user is logged in, the navbar displays links to the pages Tasks, Categories, Teams, the users profile, and the log out button. The users profile image and username appear in the navbar.
 
-[insert logged in navbar]
+![logged in navbar](src/assets/ReadMe/LoggedInLinks.png)
+
+**Responsive Navbar** - The site has a responsive Nav bar with a toggle to hide links on smaller devices: ![Nav bar toggle](src/assets/ReadMe/NavToggle.png)
 
 **Responsive User Interface** - This project has a responsive UI that adapts to different screen sizes depending on what type of device the user is viewing the app on.
 
 **Profile Page** - The profile page allows the user to update their name, give a bio and upload a profile photo, it also allows users to directly see what teams they are a part of.
 
-**Real-time updates** - 
+**Real-time updates** - As you create or edit teams these updates are seen below the Team form and also instantly update on the users profile.
 
-**Alerts**
+**Alerts** - When a user adds or edits anything on the site they are alerted of the relevent changes, they are also asked to confirm if they are sure they want to delete something.
 
 ## Security Practices
 
@@ -53,7 +53,7 @@ The app is broken down to a number of components to improve the speed and functi
     - categoryEdit
 - ProfilePage
     - EditProfile
-    - 
+- 
 
 ## Deployment Process
 
@@ -99,29 +99,23 @@ For this project I’ve created a list of user stories and posted them as issues
 - Users are able to register an account
 - users can log in and out of the app
 - User login information is kept safe and secure
-
-1. As a **Site User** I can **see my login status** so that I can **tell if I’m still logged in**
+2. As a **Site User** I can **see my login status** so that I can **tell if I’m still logged in**
 - Users can log in with their registered account
 - Users can see their login status in the navigation bar of the app
-
-1. As a **Site User** I can **set a due date for a task** so that I can **see if a task is overdue**
+3. As a **Site User** I can **set a due date for a task** so that I can **see if a task is overdue**
 - Users are able to assign due dates to tasks
 - Users can view the task due dates from the main screen
 - Users are notified if their tasks are overdue
-
-1. As a **Site User** I can **Add Teams** So that I can **Assign tasks to other users**
+4. As a **Site User** I can **Add Teams** So that I can **Assign tasks to other users**
 - Users are able to create and edit teams
 - Users are able to assign specific tasks to teams
-
-1. As a **Site User** I can **easily navigate the app** so that I can **always keep track of what page I’m on**
+5. As a **Site User** I can **easily navigate the app** so that I can **always keep track of what page I’m on**
 - A navbar is clearly positioned on the top of the app
 - The active page is always highlighted in the navbar
-
-1. As a **Site User** I can **Upload files** so that I can **provide more detail for tasks**
+6. As a **Site User** I can **Upload files** so that I can **provide more detail for tasks**
 - Users can upload files to tasks
 - users can view uploaded files on the on-going tasks page.
-
-1. As a **Site User** I can **view existing tasks** so that I can **mark them as completed**
+7. As a **Site User** I can **view existing tasks** so that I can **mark them as completed**
 - Tasks have a completed button
 - Tasks are visible and editable after they are created
 - Users can view, edit and delete tasks.

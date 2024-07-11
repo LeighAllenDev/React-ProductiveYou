@@ -37,7 +37,7 @@ const TaskList = () => {
                     {tasks.map(task => (
                         <Col key={task.id} md={4} className="mb-4">
                             <Card>
-                                <Card.Body>
+                                <Card.Body style={{ color: 'black' }}>
                                     <Card.Title>
                                         <Link to={`/tasks/${task.id}`} className={styles.CardLink}>
                                             {task.task_name}

@@ -17,7 +17,6 @@ const TaskDetail = () => {
             const taskData = response.data;
             setTask(taskData);
 
-            // Extract the team ID correctly
             const teamId = typeof taskData.team === 'object' ? taskData.team.id : taskData.team;
             if (teamId) {
                 await fetchTeam(teamId);
@@ -83,17 +82,17 @@ const TaskDetail = () => {
 
     return (
         <Container className={styles.App}>
-            <Row className="justify-content-center">
+            <Row className="justify-content-center mt-5">
                 <Col md={8}>
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>{task.task_name}</Card.Title>
-                            <Card.Text>{task.description}</Card.Text>
-                            <Card.Text><strong>Due Date:</strong> {task.due_date}</Card.Text>
-                            <Card.Text><strong>Urgent:</strong> {task.is_urgent ? 'Yes' : 'No'}</Card.Text>
-                            <Card.Text><strong>Completed:</strong> {task.completed ? 'Yes' : 'No'}</Card.Text>
-                            {task.category && <Card.Text><strong>Category:</strong> {task.category.name}</Card.Text>}
-                            {team && <Card.Text><strong>Team:</strong> {team.name}</Card.Text>}
+                    <Card className="mb-3">
+                        <Card.Body style={{ color: 'black' }}>
+                            <Card.Title className="mb-3">{task.task_name}</Card.Title>
+                            <Card.Text className="mb-2">{task.description}</Card.Text>
+                            <Card.Text className="mb-2"><strong>Due Date:</strong> {task.due_date}</Card.Text>
+                            <Card.Text className="mb-2"><strong>Urgent:</strong> {task.is_urgent ? 'Yes' : 'No'}</Card.Text>
+                            <Card.Text className="mb-2"><strong>Completed:</strong> {task.completed ? 'Yes' : 'No'}</Card.Text>
+                            {task.category && <Card.Text className="mb-2"><strong>Category:</strong> {task.category.name}</Card.Text>}
+                            {team && <Card.Text className="mb-2"><strong>Team:</strong> {team.name}</Card.Text>}
                         </Card.Body>
                     </Card>
                 </Col>

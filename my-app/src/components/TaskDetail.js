@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
+import { Container, Card, Row, Col, Alert, Spinner } from 'react-bootstrap';
 import { axiosReq } from '../api/axiosDefaults';
+import styles from '../App.module.css';
 
 const TaskDetail = () => {
     const { id } = useParams();
@@ -12,8 +14,15 @@ const TaskDetail = () => {
     const fetchTask = useCallback(async () => {
         try {
             const response = await axiosReq.get(`/api/tasks/${id}/`);
-            setTask(response.data);
-            fetchTeam(response.data.team);
+            const taskData = response.data;
+            setTask(taskData);
+
+            // Extract the team ID correctly
+            const teamId = typeof taskData.team === 'object' ? taskData.team.id : taskData.team;
+            if (teamId) {
+                await fetchTeam(teamId);
+            }
+
             setLoading(false);
         } catch (error) {
             console.error('Error fetching task:', error);
@@ -28,7 +37,7 @@ const TaskDetail = () => {
             setTeam(response.data);
         } catch (error) {
             console.error('Error fetching team:', error);
-            setError('Error fetching team. Please try again later.'); // Update error state
+            setError('Error fetching team. Please try again later.');
         }
     };
 
@@ -37,27 +46,59 @@ const TaskDetail = () => {
     }, [fetchTask]);
 
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <Container className={styles.App}>
+                <Row>
+                    <Col className="text-center">
+                        <Spinner animation="border" />
+                    </Col>
+                </Row>
+            </Container>
+        );
     }
 
     if (error) {
-        return <div>{error}</div>;
+        return (
+            <Container className={styles.App}>
+                <Row>
+                    <Col className="text-center">
+                        <Alert variant="danger">{error}</Alert>
+                    </Col>
+                </Row>
+            </Container>
+        );
     }
 
-    if (!task || !team) {
-        return <div>Task or team not found.</div>;
+    if (!task) {
+        return (
+            <Container className={styles.App}>
+                <Row>
+                    <Col className="text-center">
+                        <Alert variant="warning">Task not found.</Alert>
+                    </Col>
+                </Row>
+            </Container>
+        );
     }
 
     return (
-        <div>
-            <h1>{task.task_name}</h1>
-            <p>{task.description}</p>
-            <p>Due Date: {task.due_date}</p>
-            <p>Urgent: {task.is_urgent ? 'Yes' : 'No'}</p>
-            <p>Completed: {task.completed ? 'Yes' : 'No'}</p>
-            <p>Category: {task.category.name}</p>
-            <p>Team: {team.name}</p>
-        </div>
+        <Container className={styles.App}>
+            <Row className="justify-content-center">
+                <Col md={8}>
+                    <Card>
+                        <Card.Body>
+                            <Card.Title>{task.task_name}</Card.Title>
+                            <Card.Text>{task.description}</Card.Text>
+                            <Card.Text><strong>Due Date:</strong> {task.due_date}</Card.Text>
+                            <Card.Text><strong>Urgent:</strong> {task.is_urgent ? 'Yes' : 'No'}</Card.Text>
+                            <Card.Text><strong>Completed:</strong> {task.completed ? 'Yes' : 'No'}</Card.Text>
+                            {task.category && <Card.Text><strong>Category:</strong> {task.category.name}</Card.Text>}
+                            {team && <Card.Text><strong>Team:</strong> {team.name}</Card.Text>}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     );
 };
 

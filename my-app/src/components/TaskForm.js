@@ -18,6 +18,7 @@ const TaskForm = () => {
     });
     const [categories, setCategories] = useState([]);
     const [teams, setTeams] = useState([]);
+    const [selectedFiles, setSelectedFiles] = useState([]);
 
     const fetchCategories = async () => {
         try {
@@ -70,13 +71,40 @@ const TaskForm = () => {
         }));
     };
 
+    const handleFileChange = (e) => {
+        setSelectedFiles(e.target.files);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('task_name', task.task_name);
+        formData.append('description', task.description);
+        formData.append('is_urgent', task.is_urgent);
+        formData.append('completed', task.completed);
+        formData.append('due_date', task.due_date);
+        formData.append('category', task.category);
+        formData.append('team', task.team);
+
+        if (selectedFiles.length > 0) {
+            for (let i = 0; i < selectedFiles.length; i++) {
+                formData.append('files', selectedFiles[i]);
+            }
+        }
+
         try {
             if (id) {
-                await axiosReq.put(`/api/tasks/${id}/`, task);
+                await axiosReq.put(`/api/tasks/${id}/`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
             } else {
-                await axiosReq.post('/api/tasks/', task);
+                await axiosReq.post('/api/tasks/', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
             }
             navigate('/tasks');
         } catch (error) {
@@ -169,6 +197,16 @@ const TaskForm = () => {
                         label="Completed"
                         checked={task.completed}
                         onChange={handleChange}
+                    />
+                </Form.Group>
+                <Form.Group controlId="files">
+                    <Form.Label>Upload Files</Form.Label>
+                    <Form.Control
+                        type="file"
+                        multiple
+                        name="files"
+                        onChange={handleFileChange}
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
                     />
                 </Form.Group>
                 <Button type="submit" variant="primary" className="mt-3">

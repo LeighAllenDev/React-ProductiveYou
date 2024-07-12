@@ -23,7 +23,7 @@ function SignInForm() {
     try {
       const { data } = await axios.post("/dj-rest-auth/login/", signInData);
       setCurrentUser(data.user);
-      window.location.replace("/"); // Redirect to homepage after successful login
+      window.location.replace("/");
     } catch (err) {
       if (err.response) {
         setErrors(err.response.data);

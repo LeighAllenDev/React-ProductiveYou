@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { axiosReq } from '../api/axiosDefaults';
-import styles from '../App.module.css'; // Assuming you have your CSS module for additional styles
+import styles from '../App.module.css';
 
 const EditCategory = () => {
   const { categoryId } = useParams();
@@ -17,7 +17,6 @@ const EditCategory = () => {
         const response = await axiosReq.get(`/api/categories/${categoryId}/`);
         setCategoryName(response.data.name);
       } catch (error) {
-        console.error('Error fetching category:', error);
         alert('An error occurred while fetching the category, please try again.');
       } finally {
         setLoading(false);
@@ -32,9 +31,8 @@ const EditCategory = () => {
     try {
       await axiosReq.put(`/api/categories/${categoryId}/`, { name: categoryName });
       alert('Category updated successfully!');
-      navigate('/categories'); // Navigate to categories list page
+      navigate('/categories');
     } catch (error) {
-      console.error('Error updating category:', error);
       alert('An error occurred while updating the category, please try again.');
     }
   };

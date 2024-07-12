@@ -36,10 +36,10 @@ const SignUpForm = () => {
     event.preventDefault();
     try {
       const response = await axios.post("/dj-rest-auth/registration/", signUpData);
-      console.log(response.data);  // Debugging the response data
-      window.location.replace("/signin");  // Redirect to signin page after successful signup
+      console.log(response.data);
+      window.location.replace("/signin");
     } catch (err) {
-      console.log("Error data:", err.response?.data);  // Debugging the error response
+      console.log("Error data:", err.response?.data);
       setErrors(err.response?.data || {});
     }
   };

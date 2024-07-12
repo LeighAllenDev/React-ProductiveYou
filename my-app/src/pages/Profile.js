@@ -69,7 +69,7 @@ const ProfilePage = () => {
       });
 
       setProfile(response.data);
-      setEditing(false); // Exit edit mode upon successful update
+      setEditing(false);
     } catch (error) {
       console.error('Error updating profile:', error.response?.data);
       alert('Failed to update profile: ' + JSON.stringify(error.response?.data));
@@ -129,7 +129,7 @@ const ProfilePage = () => {
             </>
           )}
         </Col>
-        <Col md={1}></Col> {/* Spacer Column */}
+        <Col md={1}></Col>
         <Col md={6} className={styles.Content}>
           <h3 className={styles.textWhite}>Teams</h3>
           {teams.map(team => (

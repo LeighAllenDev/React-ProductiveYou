@@ -17,7 +17,6 @@ export const CurrentUserProvider = ({ children }) => {
       setCurrentUser(data);
     } catch (err) {
       console.error("Error fetching current user:", err);
-      // Handle error as needed
     }
   };
 
@@ -31,7 +30,6 @@ export const CurrentUserProvider = ({ children }) => {
 
     const requestInterceptor = axiosReq.interceptors.request.use(
       async (config) => {
-        // Add token to request headers if available
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
@@ -48,7 +46,6 @@ export const CurrentUserProvider = ({ children }) => {
       async (error) => {
         const originalRequest = error.config;
 
-        // Handle 401 errors
         if (error.response && error.response.status === 401) {
           if (!isRefreshing) {
             isRefreshing = true;
@@ -67,14 +64,10 @@ export const CurrentUserProvider = ({ children }) => {
               return axios(originalRequest);
             } catch (refreshError) {
               console.error("Refresh token request failed:", refreshError);
-              // Handle refresh token request errors
-              // Redirect to signin page if refresh token fails
-              // Example: window.location.href = '/signin';
             } finally {
               isRefreshing = false;
             }
           } else {
-            // Queue up the request and wait for token refresh
             return new Promise((resolve) => {
               subscribers.push((token) => {
                 originalRequest.headers.Authorization = `Bearer ${token}`;

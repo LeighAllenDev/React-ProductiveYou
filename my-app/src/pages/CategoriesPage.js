@@ -14,9 +14,8 @@ const CategoriesPage = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get('/api/categories/');
-        // Check if response has a 'results' array
         if (response.data && Array.isArray(response.data.results)) {
-          setCategories(response.data.results); // Set categories to 'results'
+          setCategories(response.data.results);
         } else {
           throw new Error('Unexpected response format: data.results is not an array');
         }
@@ -68,8 +67,6 @@ const CategoriesPage = () => {
   return (
     <Container className={styles.App}>
       <h3 className="text-center text-light">Categories</h3>
-
-      {/* Add Category Form */}
       <div className={`card-panel ${styles.Content} mb-4`}>
         <Form onSubmit={handleAddCategorySubmit}>
           <Form.Group>
@@ -89,7 +86,6 @@ const CategoriesPage = () => {
         </Form>
       </div>
 
-      {/* Categories List */}
       <Row>
         {categories.map((category) => (
           <Col key={category.id} sm={12} md={6} lg={4} className="mb-4">

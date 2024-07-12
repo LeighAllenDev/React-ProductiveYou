@@ -30,7 +30,6 @@ const EditTeam = ({ team, onSubmit, onCancel }) => {
       const response = await axiosReq.get('/profiles/');
       setUsers(response.data);
     } catch (error) {
-      console.error('Error fetching users:', error);
       alert('Failed to fetch users. Please try again.');
     }
   };

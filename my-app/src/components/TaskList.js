@@ -13,7 +13,7 @@ const TaskList = () => {
                 const response = await axios.get('/api/tasks/');
                 const taskData = response.data.results ? response.data.results : response.data;
                 setTasks(Array.isArray(taskData) ? taskData : []);
-                console.log('Fetched tasks:', taskData); // Debugging log
+                console.log('Fetched tasks:', taskData);
             } catch (error) {
                 console.error("Error fetching tasks:", error);
             }

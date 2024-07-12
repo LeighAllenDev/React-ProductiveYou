@@ -10,7 +10,7 @@ const TeamsPage = () => {
   const [newTeamData, setNewTeamData] = useState({
     name: '',
     description: '',
-    users: []  // Ensure this is correctly updated with user IDs
+    users: []
   });
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -56,7 +56,7 @@ const TeamsPage = () => {
     const data = {
       name: newTeamData.name,
       description: newTeamData.description,
-      user_ids: newTeamData.users  // Ensure this matches the backend field name
+      user_ids: newTeamData.users
     };
 
     try {

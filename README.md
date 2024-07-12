@@ -90,7 +90,7 @@ To deploy this project to heroku I use following process, here are the steps:
 - Log in to Heroku
 - Click the **New** button at the top right of the page
 - Select **Create new app** in the dropdown menu
-- Choose a unique name for the project: **productive-you-api**
+- Choose a unique name for the project: **react-productive-you**
 - Select the region for the app then click **Create App**
 - On the *Deployment Method* section, select **GitHub** and connect to your **GitHub account**
 - Search through the repositories and find the one that matches this project - **React-ProductiveYou**

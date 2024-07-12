@@ -1,8 +1,0 @@
-{
-    "name": "react-productiveyou",
-    "version": "1.0.0",
-    "scripts": {
-      "heroku-postbuild": "cd my-app && npm install && npm run build"
-    }
-  }
-  

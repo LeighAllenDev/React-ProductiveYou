@@ -86,7 +86,15 @@ The app is broken down to a number of components to improve the speed and functi
 - HomePage - This is the home page of the app
 
 ## Deployment Process
-
+To deploy this project to heroku I use following process, here are the steps:
+- Log in to Heroku
+- Click the **New** button at the top right of the page
+- Select **Create new app** in the dropdown menu
+- Choose a unique name for the project: **productive-you-api**
+- Select the region for the app then click **Create App**
+- On the *Deployment Method* section, select **GitHub** and connect to your **GitHub account**
+- Search through the repositories and find the one that matches this project - **React-ProductiveYou**
+- at the bottom of the page, click on the **Deploy** button.
 ## Front-end Code Standards
 The JSX Code practices for a react project are as follows:
 * Keep code readable, break complex components down to smaller reusable components to enhance maintainability and readability

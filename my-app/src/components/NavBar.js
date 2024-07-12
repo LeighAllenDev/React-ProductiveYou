@@ -28,21 +28,21 @@ const NavBar = () => {
         activeClassName={styles.Active}
         to="/tasks"
       >
-        <i className="fas fa-stream"></i>Tasks
+        <i class="fa-solid fa-list-check"></i>Tasks
       </NavLink>
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
         to="/categories"
       >
-        <i className="fas fa-stream"></i>Categories
+        <i class="fa-regular fa-folder-open"></i>Categories
       </NavLink>
       <NavLink
         className={styles.NavLink}
         activeClassName={styles.Active}
         to="/teams"
       >
-        <i className="fas fa-heart"></i>Teams
+        <i class="fa-solid fa-people-group"></i>Teams
       </NavLink>
       <NavLink
   className={styles.NavLink}

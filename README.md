@@ -117,6 +117,9 @@ During testing of this project I run **npm start** which brings up the developme
 
 For pages that send or receive data through the API I use the chrome developer tools to see the terminal which will give more detailed information if there is an issue with a get or push request. then commit my changes and try to fix the error, with each step committing so that, if needed, I can go back through previous versions.
 
+### Additional Testing
+On getting a resub for this project, I performed additional tests. I had successfully deployed this project to **Heroku**, however I hadn't properly checked to make sure it worked correctly. As it turned out, users were unable to register an account or log in, this was due to an error with the API where I hadn't correctly set up the cors headers. After fixing that through the API repository, users are now able to login, create accounts and update all parts of this site as intended.
+
 ### Version Control
 
 During the development of this React project I have continually used GitHub and Git for version control. With every project, there are huge benefits to using version control such as Git, examples of these are as follows:

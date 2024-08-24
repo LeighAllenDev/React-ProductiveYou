@@ -18,6 +18,7 @@ This project works hand in hand with another project I’ve made [ProductiveYou 
 6. [Front-end Code Standards](#front-end-code-standards)
 7. [Testing and Version Control](#testing-and-version-control)
     * [Manual Testing](#manual-testing)
+    * [Additional Testing](#additional-testing)
     * [Version Control](#version-control)
 8. [Agile Project Management](#agile-project-management)
     * [User Stories](#user-stories)

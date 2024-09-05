@@ -12,7 +12,7 @@ const TaskForm = () => {
         description: '',
         is_urgent: false,
         completed: false,
-        due_date: null,
+        due_date: '',
         category: '',
         team: '',
     });
@@ -143,6 +143,7 @@ const TaskForm = () => {
                         name="due_date"
                         value={task.due_date || ''}
                         onChange={handleChange}
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="category">

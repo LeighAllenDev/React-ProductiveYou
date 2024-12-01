@@ -12,6 +12,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import TaskDetail from './components/TaskDetail';
+import EditTask from './components/EditTask';
 import styles from './App.module.css';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
               <Route path="/teams" element={<TeamsPage />} />
               <Route path="/profiles/:id" element={<ProfilePage />} />
               <Route path="*" element={<p>Page not found!</p>} />
+              <Route path="/tasks/:id/edit" element={<EditTask />} />
 
             </Routes>
           </div>

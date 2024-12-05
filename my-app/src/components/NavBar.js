@@ -14,59 +14,65 @@ const NavBar = () => {
 
   const handleSignOut = async () => {
     try {
-      await axios.post('dj-rest-auth/logout/');
-      setCurrentUser(null);
+        await axios.post('dj-rest-auth/logout/');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setCurrentUser(null);
     } catch (err) {
-      console.log(err);
+        console.log(err);
     }
-  };
+};
 
   const loggedInIcons = (
     <>
       <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
+        className={({ isActive }) =>
+          isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink
+        }
         to="/tasks"
       >
-        <i class="fa-solid fa-list-check"></i>Tasks
+        <i className="fa-solid fa-list-check"></i>Tasks
       </NavLink>
       <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
+        className={({ isActive }) =>
+          isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink
+        }
         to="/categories"
       >
-        <i class="fa-regular fa-folder-open"></i>Categories
+        <i className="fa-regular fa-folder-open"></i>Categories
+      </NavLink>
+      <NavLink
+        className={({ isActive }) =>
+          isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink
+        }
+        to="/teams"
+      >
+        <i className="fa-solid fa-people-group"></i>Teams
       </NavLink>
       <NavLink
         className={styles.NavLink}
-        activeClassName={styles.Active}
-        to="/teams"
+        to={`/profiles/${currentUser?.profile?.id}`}
       >
-        <i class="fa-solid fa-people-group"></i>Teams
+        <div className={styles.ProfileLink}>
+          {currentUser && currentUser.profile?.image ? (
+            <img
+              src={currentUser.profile.image}
+              alt="Profile"
+              className={styles.Image}
+              style={{ width: '40px', height: '40px', borderRadius: '50%' }}
+              onError={(e) => {
+                e.target.src =
+                  'https://res.cloudinary.com/du2uzk3no/image/upload/v1714042156/default_profile_nwigev.jpg';
+              }}
+            />
+          ) : (
+            <i className="fas fa-user-circle"></i>
+          )}
+          <span className={styles.Username}>
+            {currentUser && currentUser.username}
+          </span>
+        </div>
       </NavLink>
-      <NavLink
-  className={styles.NavLink}
-  to={`/profiles/${currentUser?.profile?.id}`}
->
-  <div className={styles.ProfileLink}>
-    {currentUser && currentUser.profile?.image ? (
-      <img
-        src={currentUser.profile.image}
-        alt="Profile"
-        className={styles.Image}
-        style={{ width: '40px', height: '40px', borderRadius: '50%' }}
-        onError={(e) => {
-          e.target.src = 'https://res.cloudinary.com/du2uzk3no/image/upload/v1714042156/default_profile_nwigev.jpg'; // Replace with default image URL
-        }}
-      />
-    ) : (
-      <i className="fas fa-user-circle"></i>
-    )}
-    <span className={styles.Username}>{currentUser && currentUser.username}</span>
-  </div>
-</NavLink>
-
-
 
       <NavLink className={styles.NavLink} to="/" onClick={handleSignOut}>
         <i className="fas fa-sign-out-alt"></i>Sign out
@@ -77,16 +83,18 @@ const NavBar = () => {
   const loggedOutIcons = (
     <>
       <NavLink
-        className={styles.NavLink}
-        activeClassName={styles.Active}
+        className={({ isActive }) =>
+          isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink
+        }
         to="/signin"
       >
         <i className="fas fa-sign-in-alt"></i>Log In
       </NavLink>
       <NavLink
+        className={({ isActive }) =>
+          isActive ? `${styles.NavLink} ${styles.Active}` : styles.NavLink
+        }
         to="/signup"
-        className={styles.NavLink}
-        activeClassName={styles.Active}
       >
         <i className="fas fa-user-plus"></i>Register
       </NavLink>
@@ -106,7 +114,7 @@ const NavBar = () => {
             <h2>ProductiveYou</h2>
           </Navbar.Brand>
         </NavLink>
-        
+
         <Navbar.Toggle
           ref={ref}
           onClick={() => setExpanded(!expanded)}

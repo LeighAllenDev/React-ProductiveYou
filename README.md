@@ -25,6 +25,9 @@ This project works hand in hand with another project I’ve made [ProductiveYou 
     * [Agile Practices](#agile-practices)
 9. [Front-End Libraries](#front-end-libraries)
 10. [Credits](#credits)
+11. [Improvements](#new-improvements)
+
+## New Improvements
 
 
 ## Design Process

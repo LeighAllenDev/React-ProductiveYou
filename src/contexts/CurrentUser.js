@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { axiosReq, axiosRes } from "../api/axiosDefaults";
 
@@ -12,39 +12,41 @@ export const CurrentUserProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    const fetchCurrentUser = async () => {
-      try {
-          const { data } = await axiosRes.get("/dj-rest-auth/user/");
-          setCurrentUser(data);
-      } catch (err) {
-          console.error("Error fetching current user:", err);
-          setCurrentUser(null);
-      } finally {
-          setIsLoading(false);
-      }
-  };
-  
+    const clearTokensAndLogout = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        setCurrentUser(null);
+    };
+
+    const fetchCurrentUser = useCallback(async () => {
+        try {
+            const { data } = await axiosRes.get("/dj-rest-auth/user/");
+            setCurrentUser(data);
+        } catch (err) {
+            if (err.response?.status === 401) {
+                console.warn("Unauthorized: Clearing tokens");
+                clearTokensAndLogout();
+            } else {
+                console.error("Error fetching current user:", err);
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-      const accessToken = localStorage.getItem('accessToken');
-      if (accessToken) {
-          fetchCurrentUser();
-      } else {
-          setCurrentUser(null);
-          setIsLoading(false);
-      }
-  }, []);
-  
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+            fetchCurrentUser();
+        } else {
+            setCurrentUser(null);
+            setIsLoading(false);
+        }
+    }, [fetchCurrentUser]);
 
     useEffect(() => {
         let isRefreshing = false;
         let subscribers = [];
-
-        const clearTokensAndLogout = () => {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
-            setCurrentUser(null);
-        };
 
         const requestInterceptor = axiosReq.interceptors.request.use(
             (config) => {
@@ -105,7 +107,9 @@ export const CurrentUserProvider = ({ children }) => {
         };
     }, []);
 
-    return isLoading ? <div>Loading...</div> : (
+    return isLoading ? (
+        <div>Loading...</div>
+    ) : (
         <CurrentUserContext.Provider value={currentUser}>
             <SetCurrentUserContext.Provider value={setCurrentUser}>
                 {children}

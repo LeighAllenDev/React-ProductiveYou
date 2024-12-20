@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Alert, Container, Row, Col, Image } from "react-bootstrap";
 import signin from "../assets/signin.jpg";
 import styles from "../styles/SignInUpForm.module.css";
@@ -10,6 +10,7 @@ import { useSetCurrentUser } from "../contexts/CurrentUser";
 
 function SignInForm() {
   const setCurrentUser = useSetCurrentUser();
+  const navigate = useNavigate();
 
   const [signInData, setSignInData] = useState({
     username: "",
@@ -20,13 +21,20 @@ function SignInForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    // Simple client-side validation
+    if (!signInData.username || !signInData.password) {
+      setErrors({ non_field_errors: ["Both fields are required."] });
+      return;
+    }
+
     try {
       const { data } = await axios.post("/dj-rest-auth/login/", signInData);
       setCurrentUser(data.user);
-      window.location.replace("/");
+      navigate("/"); // Redirect to the homepage
     } catch (err) {
-      if (err.response) {
-        setErrors(err.response.data);
+      if (err.response && err.response.data) {
+        setErrors(err.response.data); // Handle API errors
       } else {
         console.error("Unexpected error occurred:", err);
         setErrors({ non_field_errors: ["An unexpected error occurred. Please try again later."] });
@@ -45,7 +53,7 @@ function SignInForm() {
   return (
     <Row className={styles.Row}>
       <Col className="my-auto p-0 p-md-2 App" md={6}>
-        <Container className={`${appStyles.Content} p-4 `}>
+        <Container className={`${appStyles.Content} p-4`}>
           <h1 className={styles.Header}>Sign In</h1>
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="username">
@@ -57,6 +65,7 @@ function SignInForm() {
                 className={styles.Input}
                 value={signInData.username}
                 onChange={handleChange}
+                aria-label="Username" // Accessibility improvement
               />
               {errors.username?.map((message, idx) => (
                 <Alert key={idx} variant="warning" className="mt-2">
@@ -74,6 +83,7 @@ function SignInForm() {
                 className={styles.Input}
                 value={signInData.password}
                 onChange={handleChange}
+                aria-label="Password" // Accessibility improvement
               />
               {errors.password?.map((message, idx) => (
                 <Alert key={idx} variant="warning" className="mt-2">
@@ -106,7 +116,7 @@ function SignInForm() {
       </Col>
 
       <Col md={6} className={`my-auto d-none d-md-block p-2 ${styles.SignInCol}`}>
-        <Image className={`${appStyles.FillerImage}`} src={signin} />
+        <Image className={`${appStyles.FillerImage}`} src={signin} alt="Sign in visual" />
       </Col>
     </Row>
   );

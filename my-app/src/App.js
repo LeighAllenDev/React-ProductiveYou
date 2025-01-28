@@ -8,7 +8,7 @@ import CategoriesPage from './pages/CategoriesPage';
 import EditCategory from './components/CategoryEdit';
 import TeamsPage from './pages/TeamsPage';
 import ProfilePage from './pages/Profile';
-import ErrorBoundary from './components/ErrorBoundary';
+// import ErrorBoundary from './components/ErrorBoundary';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import TaskDetail from './components/TaskDetail';
@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <ErrorBoundary>
+      {/* <ErrorBoundary> */}
         <div className={styles.App} >
           <div className={styles.Conainer}>
             <Routes>
@@ -42,7 +42,7 @@ function App() {
           </div>
         </div>
 
-      </ErrorBoundary>
+      {/* </ErrorBoundary> */}
     </>
   );
 }

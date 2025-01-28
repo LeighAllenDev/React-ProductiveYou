@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { axiosReq, axiosRes } from "../api/axiosDefaults";
 
 export const CurrentUserContext = createContext(null);
@@ -10,29 +10,45 @@ export const useSetCurrentUser = () => useContext(SetCurrentUserContext);
 
 export const CurrentUserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Fetch the current user on mount
-  const fetchCurrentUser = async () => {
-    try {
-      const { data } = await axiosRes.get("/dj-rest-auth/user/");
-      setCurrentUser(data);
-    } catch (err) {
-      console.error("Error fetching current user:", err);
-      setCurrentUser(null); // Clear user if there’s an error (e.g., session expired)
-    } finally {
-      setIsLoading(false); // Mark loading complete
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const { data } = await axiosRes.get("/dj-rest-auth/user/");
+        setCurrentUser(data);
+      } catch (err) {
+        console.error("Error fetching current user:", err);
+      }
+    };
+
     fetchCurrentUser();
   }, []);
 
-  // Add interceptor to refresh tokens and retry failed requests
   useEffect(() => {
     let isRefreshing = false;
     let subscribers = [];
+
+    const addSubscriber = (callback) => subscribers.push(callback);
+
+    const notifySubscribers = (newToken) => {
+      subscribers.forEach((callback) => callback(newToken));
+      subscribers = [];
+    };
+
+    const refreshAccessToken = async () => {
+      try {
+        const { data } = await axiosReq.post("/dj-rest-auth/token/refresh/");
+        const newAccessToken = data.access;
+        localStorage.setItem("accessToken", newAccessToken);
+        return newAccessToken;
+      } catch (err) {
+        console.error("Failed to refresh token:", err);
+        setCurrentUser(null);
+        navigate("/signin"); // Redirect to login page on token refresh failure
+        throw err;
+      }
+    };
 
     const requestInterceptor = axiosReq.interceptors.request.use(
       (config) => {
@@ -51,35 +67,24 @@ export const CurrentUserProvider = ({ children }) => {
         const originalRequest = error.config;
 
         if (error.response?.status === 401 && !originalRequest._retry) {
+          originalRequest._retry = true;
+
           if (!isRefreshing) {
             isRefreshing = true;
-            originalRequest._retry = true;
-
             try {
-              const refreshToken = localStorage.getItem("refreshToken");
-              const { data } = await axios.post("/dj-rest-auth/token/refresh/", {
-                refresh: refreshToken,
-              });
-
-              const newAccessToken = data.access;
-              localStorage.setItem("accessToken", newAccessToken);
-
-              // Notify all subscribers with the new token
-              subscribers.forEach((callback) => callback(newAccessToken));
-              subscribers = [];
-
-              return axiosReq(originalRequest); // Retry the original request
-            } catch (refreshError) {
-              console.error("Error refreshing token:", refreshError);
-              setCurrentUser(null); // Log the user out
+              const newAccessToken = await refreshAccessToken();
+              notifySubscribers(newAccessToken);
+              return axiosReq(originalRequest);
+            } catch (err) {
+              console.error("Token refresh failed:", err);
+              throw err;
             } finally {
               isRefreshing = false;
             }
           } else {
-            // Add requests to the subscriber queue while refreshing
             return new Promise((resolve) => {
-              subscribers.push((token) => {
-                originalRequest.headers.Authorization = `Bearer ${token}`;
+              addSubscriber((newToken) => {
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
                 resolve(axiosReq(originalRequest));
               });
             });
@@ -90,17 +95,16 @@ export const CurrentUserProvider = ({ children }) => {
       }
     );
 
-    // Clean up interceptors on unmount
     return () => {
       axiosReq.interceptors.request.eject(requestInterceptor);
       axiosRes.interceptors.response.eject(responseInterceptor);
     };
-  }, []);
+  }, [navigate]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <SetCurrentUserContext.Provider value={setCurrentUser}>
-        {isLoading ? null : children}
+        {children}
       </SetCurrentUserContext.Provider>
     </CurrentUserContext.Provider>
   );

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
-import axios from 'axios';
 import { axiosReq } from '../api/axiosDefaults';
 import styles from '../App.module.css';
 

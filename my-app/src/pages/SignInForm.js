@@ -21,20 +21,23 @@ function SignInForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Simple client-side validation
+  
     if (!signInData.username || !signInData.password) {
       setErrors({ non_field_errors: ["Both fields are required."] });
       return;
     }
-
+  
     try {
-      const { data } = await axios.post("/dj-rest-auth/login/", signInData);
+      const { data } = await axios.post(
+        "/dj-rest-auth/login/",
+        signInData,
+        { withCredentials: true } // Ensure cookies are sent
+      );
       setCurrentUser(data.user);
       navigate("/"); // Redirect to the homepage
     } catch (err) {
       if (err.response && err.response.data) {
-        setErrors(err.response.data); // Handle API errors
+        setErrors(err.response.data);
       } else {
         console.error("Unexpected error occurred:", err);
         setErrors({ non_field_errors: ["An unexpected error occurred. Please try again later."] });

@@ -48,7 +48,6 @@ export const refreshToken = async () => {
   }
 };
 
-// Token Refresh Interceptor (Handles 401 Errors)
 axiosReq.interceptors.response.use(
   (response) => response,
   async (error) => {

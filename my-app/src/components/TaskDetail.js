@@ -149,7 +149,7 @@ const TaskDetail = ({ id: propId, onClose }) => {
                                 <strong>Completed:</strong> {task.completed ? "Yes" : "No"}
                             </Card.Text>
                             <Card.Text className="mb-2">
-                                <strong>Category:</strong> {task.category || "No category assigned"}
+                                <strong>Category:</strong> {task.category?.name || "No category assigned"}
                             </Card.Text>
                             <Card.Text className="mb-2">
                                 <strong>Team:</strong> {task.team?.name || "No team assigned"}

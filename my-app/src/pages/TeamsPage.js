@@ -3,6 +3,7 @@ import { axiosReq } from '../api/axiosDefaults';
 import { Card, Button, Form, Modal, Container, Row, Col } from 'react-bootstrap';
 import EditTeam from '../components/EditTeam';
 import styles from '../App.module.css';
+import Cookies from 'js-cookie';
 
 const TeamsPage = () => {
   const [teams, setTeams] = useState([]);
@@ -82,12 +83,18 @@ const TeamsPage = () => {
 
   const handleJoinTeam = async (teamId) => {
     try {
-      const response = await axiosReq.post(`/teams/${teamId}/join/`);
+      const response = await axiosReq.post(`/teams/${teamId}/join/`, {}, {
+        withCredentials: true, // Ensures cookies (tokens) are sent automatically
+        headers: {
+          'X-CSRFToken': Cookies.get("csrftoken"), // CSRF token for security
+        },
+      });
+  
       alert('Successfully joined the team!');
       fetchTeams();
     } catch (error) {
       console.error('Error joining team:', error);
-      alert('Failed to join the team. Please try again.');
+      alert(error.response?.data?.detail || 'Failed to join the team. Please try again.');
     }
   };
 

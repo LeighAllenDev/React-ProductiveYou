@@ -84,9 +84,9 @@ const TeamsPage = () => {
   const handleJoinTeam = async (teamId) => {
     try {
       const response = await axiosReq.post(`/teams/${teamId}/join/`, {}, {
-        withCredentials: true, // Ensures cookies (tokens) are sent automatically
+        withCredentials: true,
         headers: {
-          'X-CSRFToken': Cookies.get("csrftoken"), // CSRF token for security
+          'X-CSRFToken': Cookies.get("csrftoken"),
         },
       });
   

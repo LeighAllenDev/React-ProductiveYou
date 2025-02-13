@@ -154,13 +154,19 @@ const TaskDetail = ({ id: propId, onClose }) => {
                             <Card.Text className="mb-2">
                                 <strong>Team:</strong> {task.team?.name || "No team assigned"}
                             </Card.Text>
-                            {task.files.length > 0 && (
+
+                            {/* Task Files Section */}
+                            {task.task_files.length > 0 && (
                                 <Card.Text className="mb-2">
                                     <strong>Files:</strong>
                                     <ul>
-                                        {task.files.map((file) => (
+                                        {task.task_files.map((file) => (
                                             <li key={file.id}>
-                                                <a href={file.file} target="_blank" rel="noopener noreferrer">
+                                                <a
+                                                    href={file.file_url.startsWith("http") ? file.file_url : `/media/${file.file}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
                                                     {file.file.split("/").pop()}
                                                 </a>
                                             </li>
@@ -170,6 +176,8 @@ const TaskDetail = ({ id: propId, onClose }) => {
                             )}
                         </Card.Body>
                     </Card>
+
+                    {/* Action Buttons */}
                     {(isOwner || isTeamMember) && (
                         <Button
                             variant={task.completed ? "success" : "warning"}
@@ -204,6 +212,7 @@ const TaskDetail = ({ id: propId, onClose }) => {
                 </Col>
             </Row>
 
+            {/* Edit Modal */}
             <Modal show={showEditModal} onHide={() => setShowEditModal(false)} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Task</Modal.Title>
